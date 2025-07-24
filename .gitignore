@@ -1,0 +1,9 @@
+*
+!.gitignore
+!*/
+!polybar/**
+!i3/**
+!kitty/**
+!sxhkd/**
+!rofi/**
+!bspwm/**
