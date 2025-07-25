@@ -2,6 +2,9 @@
 
 pgrep -x sxhkd > /dev/null || sxhkd &
 
+bspc config remove_unplugged_monitors true
+
+# Create all desktops (I to X)
 bspc monitor -d I II III IV V VI VII VIII IX X
 
 bspc config border_width         1
@@ -14,7 +17,10 @@ bspc config focus_follows_pointer true
 
 feh --bg-fill personal/wallpapers/ghibli.jpg
 
-# Kill any existing polybar instances (hot reload safe)
-killall -q polybar
-while pgrep -x polybar >/dev/null; do sleep 1; done
-polybar default &
+if type "xrandr"; then
+  for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+    MONITOR=$m polybar --reload default &
+  done
+else
+  polybar --reload default &
+fi

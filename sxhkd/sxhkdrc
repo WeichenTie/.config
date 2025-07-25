@@ -135,3 +135,12 @@ super + Down
 # # contract a window by moving one of its side inward
 # super + alt + shift + {h,j,k,l}
 # 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+XF86MonBrightness{Up,Down}  
+	brightnessctl s 20{+,-}  
+
+XF86Audio{Raise,Lower}Volume  
+	pulsemixer --change-volume {+,-}10  
+
+XF86AudioMute  
+	pulsemixer  --toggle-mute
