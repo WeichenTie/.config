@@ -4,8 +4,22 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 
 bspc config remove_unplugged_monitors true
 
-# Create all desktops (I to X)
-bspc monitor -d I II III IV V VI VII VIII IX X
+if [[ $(xrandr -q | grep "HDMI-0 connected") ]]; then
+    # HDMI-0 is connected
+    xrandr \
+        --output DP-0 --primary --mode 3840x2160 --rate 120.00 --pos 0x0 --rotate normal \
+        --output HDMI-0 --mode 1920x1080 --pos 3840x626 --rotate normal
+
+    bspc monitor DP-0 -d I II III IV V
+    bspc monitor HDMI-0 -d VI VII VIII IX X
+else
+    # Only DP-0 is connected
+    xrandr \
+        --output DP-0 --primary --mode 3840x2160 --rate 120.00 --pos 0x0 --rotate normal \
+        --output HDMI-0 --off
+
+    bspc monitor DP-0 -d I II III IV V VI VII VIII IX X
+fi
 
 bspc config border_width         1
 bspc config window_gap          1
