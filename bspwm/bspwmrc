@@ -4,8 +4,22 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 
 bspc config remove_unplugged_monitors true
 
-# Create all desktops (I to X)
-bspc monitor -d I II III IV V VI VII VIII IX X
+
+if xrandr -q | grep -q "^DP-1 connected"; then
+    xrandr \
+      --output DP-1 --primary --mode 3840x2160 --rate 60.00 --pos 3072x0 --rotate normal \
+      --output eDP-1 --mode 3072x1920 --rate 60.00 --pos 0x96 --rotate normal
+
+    bspc wm -O DP-1 eDP-1
+
+    bspc monitor DP-1 -d I II III IV V
+    bspc monitor eDP-1 -d VI VII VIII IX X
+
+else
+    xrandr --output eDP-1 --primary --mode 3072x1920 --rate 120.00 --pos 0x0 --rotate normal
+
+    bspc monitor eDP-1 -d I II III IV V VI VII VIII IX X
+fi
 
 bspc config border_width         1
 bspc config window_gap          1
@@ -17,10 +31,6 @@ bspc config focus_follows_pointer true
 
 feh --bg-fill personal/wallpapers/ghibli.jpg
 
-if type "xrandr"; then
-  for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-    MONITOR=$m polybar --reload default &
-  done
-else
-  polybar --reload default &
-fi
+for m in $(bspc query -M --names); do
+  MONITOR=$m polybar --reload default &
+done
