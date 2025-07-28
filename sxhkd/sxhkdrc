@@ -44,7 +44,7 @@ super + g
 
 # set the window state
 super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+	bspc node -t {tiled,\~pseudo_tiled,\~floating,\~fullscreen}
 
 # set the node flags
 super + ctrl + {m,x,y,z}
@@ -144,3 +144,9 @@ XF86Audio{Raise,Lower}Volume
 
 XF86AudioMute  
 	pulsemixer  --toggle-mute
+
+Print
+    flameshot gui \
+		--print-geometry \
+		--region "$(cat /tmp/flameshot_last_region || echo '100x100+100+100')" \
+		> /tmp/flameshot_last_region
