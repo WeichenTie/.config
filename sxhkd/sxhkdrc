@@ -146,7 +146,4 @@ XF86AudioMute
 	pulsemixer  --toggle-mute
 
 Print
-    flameshot gui \
-		--print-geometry \
-		--region "$(cat /tmp/flameshot_last_region || echo '100x100+100+100')" \
-		> /tmp/flameshot_last_region
+    bash -c 'tmp=$(mktemp); if /usr/bin/flameshot gui --print-geometry --region "$(cat ~/.config/flameshot_last_region 2>/dev/null || echo 100x100+100+100)" > "$tmp"; then [ -s "$tmp" ] && mv "$tmp" ~/.config/flameshot_last_region; fi; rm -f "$tmp"'
