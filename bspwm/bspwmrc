@@ -21,6 +21,9 @@ else
     bspc monitor DP-0 -d I II III IV V VI VII VIII IX X
 fi
 
+picom &
+
+
 bspc config border_width         1
 bspc config window_gap          1
 
